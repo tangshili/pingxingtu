@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#canvas{
+				width: 400px;
+				height: 400px;
+				border: solid 1px red;
+				margin: 50px auto;
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="800"></canvas>
+		<script type="text/javascript">
+			// 获取画布
+			var canvas = document.querySelector("#canvas");
+			// 获取绘图上下文  画笔
+			var ctx = canvas.getContext("2d");
+			var w = 0;
+			ctx.strokeStyle = "red";
+			ctx.lineWidth = 4;
+			
+			/**
+			 * X:圆心坐标X
+			 * Y:圆心坐标Y
+			 * R:半径
+			 * start:开始角度
+			 * end:结束角度
+			 * flag:旋转方向 ：false-顺时针  true-逆时针
+			 * 
+			 * **/
+//			ctx.arc(400,400,300,Math.PI/2,Math.PI,true);
+//			ctx.lineTo(400,400);
+//			ctx.fillStyle = "red";
+//			ctx.fill();
+			
+			// 2. 实现一个饼形图，传入一个数组，自动绘制成一个饼形图
+			
+			
+			function drawPie(arr){
+				var color = ['red','green','blue','yellow','pink','orange','black'];
+				var sum = 0;
+				var r = [0];
+				for(var i=0;i<arr.length;i++){
+					sum +=arr[i];
+				}
+				for (var i=0;i<arr.length;i++) {
+					r[i+1] = r[i]+arr[i]/sum*360;
+				}
+				i = 0;
+				var tmp = r[i];
+				var t = setInterval(function(){
+					tmp+=2;
+					ctx.beginPath();
+					ctx.lineTo(400,400);
+					ctx.arc(400,400,400,(r[i]/180*Math.PI),(tmp/180*Math.PI),false);
+					if(tmp>=r[i+1]){
+						i++;
+					}
+					if(tmp>=360){
+						clearInterval(t);
+					}
+					ctx.fill();
+					ctx.fillStyle = color[i%color.length];
+					ctx.closePath();
+				},5);
+			}
+			drawPie([1,2,3,4,5,6,7]);
+			
+		</script>
+	</body>
+</html>
